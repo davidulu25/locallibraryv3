@@ -1,0 +1,638 @@
+openapi: 3.0.2
+info:
+  title: This is the API specification for the locallibrary project
+  description: >
+    The locallibrary application provides endpoints for digitally implementing specific operations that happen in a locallibrary
+  version: v1
+servers:
+  - url: https://davidulu1223.pythonanywhere.com
+security:
+  - BasicAuth: []
+paths:
+  /books/singular:
+    summary: This is a list of endpoints that deal with the book objects in the Book Model
+    get:
+      summary: This is the endpoint that is used to get a particular Book
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            description: This is the id of the book in the database
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The book has been retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+      security:
+        - BasicAuth: []
+    post:
+      summary: This is the endpoint to create a book record
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+      responses:
+        "200":
+          description: This book has been created
+      security:
+        - BasicAuth: []
+    patch:
+      summary: this is the endpoint to update a book record
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+      responses:
+        "200":
+          description: This book has been updated
+      security:
+        - BasicAuth: []
+    delete:
+      summary: This is the endpoint to delete a book record
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/Book"
+      responses:
+        "200":
+          description: The book has been deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+      security:
+        - BasicAuth: []
+  /books/list:
+    summary: This is a list of endpoints that deal with viewing all objects in the Book Model
+    get:
+      summary: This is the endpoint that is used to get book objects in the locallibrary
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+            description: this is the title of a book object in the database
+        - name: author
+          in: query
+          required: false
+          schema:
+            type: string
+            description: this is the author attribute of a book object in the database
+        - name: genre
+          in: query
+          required: false
+          schema:
+            type: string
+            description: this is the genre of a book object in the database
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string  
+      responses:
+        "200":
+          description: read book list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+      security:
+        - BasicAuth: []
+    post:
+      summary: This endpoint is used to add multiple books to the library at once.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+      responses:
+        "200":
+          description: Books have been added
+      security:
+        - BasicAuth: []
+  /author/singular:
+    summary: This is a list of endpoints that deal with the Author Model
+    get:
+      summary: This is the endpoint that is used to read data about a particular Author
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            description: This is the id of the author in the database
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: read author data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+      security:
+        - BasicAuth: []
+    post:
+      summary: This is the endpoint that is used to create an author record
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Author has been created
+      security:
+        - BasicAuth: []
+    patch:
+      summary: This is the endpoint used to create an author record
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Author"
+      responses:
+        "200":
+          description: This author has been updated
+      security:
+        - BasicAuth: []
+    delete:
+      summary: This is the endpoint used to delete an author record
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Author"
+      responses:
+        "200":
+          description: Author has been deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+      security:
+        - BasicAuth: []
+  /author/list:
+    summary: This endpoint deals with viewing objects in the Author Model
+    get:
+      summary: This is the endpoint that is used to get author objects from the library
+      parameters: []
+      responses:
+        "200":
+          description: read author list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+      security:
+        - BasicAuth: []
+  /genre/list:
+    summary: This endpoint deals with getting books from locallibrary by genre
+    get:
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+            description: this is the name of genre unique to book(s)
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: filtered books by genre
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          description: invalid genre. please specify a genre from the list of available genres at "/genre/list"
+      security:
+        - BasicAuth: []
+  /bookinstances/singular:
+    summary: This is the endpoint that deals with the Bookinstance Model
+    patch:
+      summary: This is method modifies singular bookinstance data
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInstance"
+      responses:
+        "200":
+          description: bookinstance status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookInstance"
+      security:
+        - BasicAuth: []
+  /bookinstances/list:
+    summary: This is a list of endpoints that deal with reading Bookinstance objects
+    get:
+      summary: This is the endpoint that is used to get bookinstance objects from the library
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/BookInstance"
+      responses:
+        "200":
+          description: read list of borrowed books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookInstance"
+      security:
+        - BasicAuth: []
+  /count/bookinstances:
+    summary: This endpoint deals with returning a count of bookinstance objects all or filtered
+    get:
+      summary: This is the endpoint that is used to get a count of bookinstance records from the library
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/BookInstance"
+        - name: Authorisation
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: read book count data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookInstance"
+      security:
+        - BasicAuth: []
+  /count/auth/login:
+    summary: This endpoint deals with returning a count of user visits to the library
+    get:
+      summary: This method is responsible for retrieving returning user visit count data
+      parameters:
+        - name: sessions_data
+          in: cookie
+          required: true
+          schema:
+            type: object
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: user visit count retrieved
+          content:
+            application/json:
+              schema:
+                type: integer
+      security:
+        - BasicAuth: []
+  /auth/login:
+    summary: This endpoint authenticates a user
+    post:
+      summary: sends provided data to security middleware for authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: login successful
+        "400":
+          description: invaild username or password
+      security:
+        - BasicAuth: []
+  /auth/logout:
+    summary: This endpoint ends a user's session
+    post:
+      summary: changes authorisation level to anonymous
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: user successfully logged out!
+      security:
+        - BasicAuth: []
+  /images/logo:
+    summary: retrieve local library icon imgAsset
+    get:
+      summary: retrive image asset
+      parameters: []
+      responses:
+        "200":
+          description: <file_name>.ext
+        "400":
+          description: image not found
+  /catalog:
+    summary: Local library home page
+    get:
+      summary: request local library home page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: object
+  /catalog/books:
+    summary: This endpoint directs user to view all books in library
+    get:
+      summary: request all books in local library
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: object
+  /catalog/book/create:
+    summary: This endpoints allows authenticated user to create book
+    get:
+      summary: request create book page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: object
+    post:
+      summary: creates a book record in library
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: book successfully created
+        "400":
+          description: fill in required fields
+  /catalog/book/{id}:
+    summary: This endpoint is used to view a singular book detail
+    get:
+      summary: get book detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: book data returned
+          content:
+            text/html:
+              schema:
+                type: object
+        "400":
+          description: This book does not exist
+  /catalog/book/{id}/update:
+    summary: This endpoint is used to interact with the front-end for updating book data
+    get:
+      summary: request book update page
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: book update page returned
+    post:
+      summary: modify book object
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: book data has been updated
+        "400":
+          description: fill in required fields
+  /catalog/authors:
+    summary: This endpoint directs user to view all authors available in library
+    get:
+      summary: request all authors in local library
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: object
+  /catalog/author/create:
+    summary: This endpoints allows authenticated user to create an author profile
+    get:
+      summary: request create author page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: object
+    post:
+      summary: creates an author profile in the library
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: author added to library
+        "400":
+          description: fill in required fields
+  /catalog/author/{id}:
+    summary: This endpoint is used to view a singular author profile
+    get:
+      summary: get singular author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: author data returned
+          content:
+            text/html:
+              schema:
+                type: object
+        "400":
+          description: This author does not exist in records
+  /catalog/author/{id}/update:
+    summary: This endpoint is used to interact with the front-end for updating author data
+    get:
+      summary: request author update page
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: author update page returned
+    post:
+      summary: modify author data
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: author profile has been updated
+        "400":
+          description: fill in required fields
+  /catalog/mybooks:
+    summary: This endpoint is used to display borrowed books by a user
+    get:
+      summary: retrieve user's borrowed books
+      parameters: []
+      responses:
+        "200":
+          description: borrowed books document returned
+          content:
+            text/html:
+              schema:
+                type: object
+  /catalog/borrowed:
+    summary: This endpoint is used to display all books loaned from a library
+    get:
+      summary: retrieve all locallibrary loaned books
+      parameters: []
+      responses:
+        "200":
+          description: all borrowed books document returned
+          content:
+            text/html:
+              schema:
+                type: object
+  /catalog/book/{bookinstance_id}/renew:
+    # summary: This endpoint is used to display all books loaned from a library
+    # get:
+    #   summary: retrieve all locallibrary loaned books
+    #   parameters: []
+    #   responses:
+    #     "200":
+    #       description: all borrowed books document returned
+    #       content:
+    #         text/html:
+    #           schema:
+    #             type: object
+components:
+  schemas:
+    Book:
+      description: book object
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        genre:
+          type: string
+          $ref: "#/components/schemas/Author"
+    Author:
+      description: author object
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+    BookInstance:
+      description: bookinstance object
+      type: object
+      properties:
+        id:
+          type: string
+        book:
+          type: string
+        due_back:
+          type: string
+          format: date-time
+        borrower:
+          type: string
+        status:
+          type: string
+          description: this is the availability status of a book
+  securitySchemes:
+    BasicAuth:
+     type: http
+     scheme: basic
