@@ -154,7 +154,7 @@ paths:
           description: Books have been added
       security:
         - BasicAuth: []
-  /author/singular:
+  /authors/singular:
     summary: This is a list of endpoints that deal with the Author Model
     get:
       summary: This is the endpoint that is used to read data about a particular Author
@@ -222,7 +222,7 @@ paths:
                 $ref: "#/components/schemas/Author"
       security:
         - BasicAuth: []
-  /author/list:
+  /authors/list:
     summary: This endpoint deals with viewing objects in the Author Model
     get:
       summary: This is the endpoint that is used to get author objects from the library
@@ -314,7 +314,7 @@ paths:
                 $ref: "#/components/schemas/BookInstance"
       security:
         - BasicAuth: []
-  /count/bookinstance/filter:
+  /count/bookinstances/filter:
     summary: This endpoint deals with returning a count of bookinstance objects all or filtered
     get:
       summary: This is the endpoint that is used to get a count of bookinstance records from the library
@@ -497,7 +497,12 @@ paths:
           description: book update page returned
     post:
       summary: modify book object
-      parameters: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -589,7 +594,12 @@ paths:
           description: author update page returned
     post:
       summary: modify author data
-      parameters: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -629,7 +639,7 @@ paths:
     get:
       summary: open locallibrary renew page
       parameters:
-        - name: id
+        - name: bookinstance_id
           in: path
           required: true
           schema:
@@ -652,7 +662,14 @@ paths:
           description: input valid date
     post:
       summary: This endpoint is used to submit renew "post" requests
-      parameters: []
+      parameters:
+        - name: bookinstance_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            description: bookinstance id
       requestBody:
         description: contains renew form data
         required: true
