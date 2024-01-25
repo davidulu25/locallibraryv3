@@ -80,7 +80,34 @@ paths:
   /books/list:
     summary: This is a list of endpoints that deal with viewing all objects in the Book Model
     get:
-      summary: This is the endpoint that is used to get book objects in the locallibrary
+      summary: This is the endpoint that is used to get all book objects in the locallibrary
+      parameters: []
+      responses:
+        "200":
+          description: read book list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+      security:
+        - BasicAuth: []
+    post:
+      summary: This endpoint is used to add multiple books to the library at once.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+      responses:
+        "200":
+          description: Books have been added
+      security:
+        - BasicAuth: []
+  /books/list/filter:
+    summary: This is a list of endpoints that deal with a filtered list of book objects
+    get:
+      summary: This is the endpoint that is used to retrieve a list of filtered books
       parameters:
         - name: title
           in: query
@@ -254,10 +281,10 @@ paths:
                 $ref: "#/components/schemas/BookInstance"
       security:
         - BasicAuth: []
-  /bookinstances/list:
-    summary: This is a list of endpoints that deal with reading Bookinstance objects
+  /bookinstances/list/filter:
+    summary: This is a list of endpoints that deal with reading filtered Bookinstance objects
     get:
-      summary: This is the endpoint that is used to get bookinstance objects from the library
+      summary: This is the endpoint that is used to get a list of filtered bookinstance objects from the library
       parameters:
         - name: status
           in: query
@@ -273,7 +300,21 @@ paths:
                 $ref: "#/components/schemas/BookInstance"
       security:
         - BasicAuth: []
-  /count/bookinstances:
+  /bookinstances/list:
+    summary: This is a list of endpoints that deal with reading Bookinstance objects
+    get:
+      summary: This is the endpoint that is used to get bookinstance objects from the library
+      parameters: []
+      responses:
+        "200":
+          description: read list of borrowed books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookInstance"
+      security:
+        - BasicAuth: []
+  /count/bookinstance/filter:
     summary: This endpoint deals with returning a count of bookinstance objects all or filtered
     get:
       summary: This is the endpoint that is used to get a count of bookinstance records from the library
@@ -283,7 +324,7 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/BookInstance"
-        - name: Authorisation
+        - name: Authorization
           in: header
           required: true
           schema:
@@ -297,7 +338,7 @@ paths:
                 $ref: "#/components/schemas/BookInstance"
       security:
         - BasicAuth: []
-  /count/auth/login:
+  /count/user/login:
     summary: This endpoint deals with returning a count of user visits to the library
     get:
       summary: This method is responsible for retrieving returning user visit count data
@@ -584,17 +625,177 @@ paths:
               schema:
                 type: object
   /catalog/book/{bookinstance_id}/renew:
-    # summary: This endpoint is used to display all books loaned from a library
-    # get:
-    #   summary: retrieve all locallibrary loaned books
-    #   parameters: []
-    #   responses:
-    #     "200":
-    #       description: all borrowed books document returned
-    #       content:
-    #         text/html:
-    #           schema:
-    #             type: object
+    summary: This endpoint is used to manage book subscription renewals on the front-end
+    get:
+      summary: open locallibrary renew page
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            description: bookinstance id
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: retrieved renew page
+          content:
+            text/html:
+              schema:
+                type: string
+        "400":
+          description: input valid date
+    post:
+      summary: This endpoint is used to submit renew "post" requests
+      parameters: []
+      requestBody:
+        description: contains renew form data
+        required: true
+        content:
+          application/x-ww-form-urlencoded:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: loan period renewed!
+  /admin:
+    summary: Local library admin page
+    get:
+      summary: request local library admin page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/login/?next=/admin:
+    summary: This endpoint deals with managing admin user authentications and sessions
+    get:
+      summary: get local library admin login page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+    post:
+      summary: authenticate user credentials
+      parameters: []
+      requestBody:
+        content:
+          application/x-ww-form-urlencoded:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: login successful
+        "400":
+          description: invalid username or email
+  /admin/catalog:
+    summary: This endpoint returns the admin catalog panel
+    get:
+      summary: request catalog admin page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/catalog/author:
+    summary: This endpoint returns the admin author page
+    get:
+      summary: request author admin page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/catalog/book:
+    summary: This endpoint returns the admin book page
+    get:
+      summary: request admin book page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/catalog/bookinstance:
+    summary: This endpoint returns the admin bookinstance page
+    get:
+      summary: request admin bookinstance page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/catalog/genre:
+    summary: This endpoint returns the admin genre page
+    get:
+      summary: request admin genre page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/catalog/language:
+    summary: This endpoint returns the admin language page
+    get:
+      summary: request admin language page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/auth:
+    summary: This endpoint returns the Authentication and Authorisation panel
+    get:
+      summary: request admin auth page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
+  /admin/auth/user:
+    summary: This endpoint returns the user management page
+    get:
+      summary: request admin user page
+      parameters: []
+      responses:
+        "200":
+          description: page found
+          content:
+            text/html:
+              schema:
+                type: string
 components:
   schemas:
     Book:
@@ -632,6 +833,12 @@ components:
         status:
           type: string
           description: this is the availability status of a book
+    Genre:
+      description: genre object
+      type: object
+      properties:
+        name:
+          type: string
   securitySchemes:
     BasicAuth:
      type: http
