@@ -21,4 +21,6 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', include("book_model_space.urls")),
+    path('authors/', include("author_model_space.urls")),
+    # path('count/', include("count_view_space.urls")),
 ]

@@ -33,7 +33,7 @@ def singular(request):
         PURPOSE:
         STEPS:
         1. Get the book data from HTTP Request body
-        2. Desrialize the book data to a Python dictionary
+        2. Deserialize the book data to a Python dictionary
         3. Get the values of the attributes for the Book object from the dictionary
         4. Save the Book object using those values
         5. Return a success HTTP Response
@@ -48,7 +48,6 @@ def singular(request):
         else:
             author.first_name = author_string
 
-        
         book = Book()
         book.title = book_data.get("title")
         book.author = author
@@ -127,4 +126,3 @@ def list(request):
         black_list = Book.objects.all()
         black_list.delete()
         return HttpResponse("The book list has been deleted")
-        pass

@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book_model_space',
     'author_model_space',
+    'bookinstance_model_space',
     'genre_model_space',
+    'count_view_space',
 ]
 
 MIDDLEWARE = [
